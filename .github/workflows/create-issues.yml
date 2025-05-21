@@ -1,3 +1,4 @@
+# Mise à jour pour activer le workflow
 name: Import issues from Template
 
 on:
