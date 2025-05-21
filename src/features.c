@@ -14,3 +14,7 @@
 void helloWorld() {
     printf("yep!");
 }
+
+void dimensions () {
+    printf ("dimension : %d, %d");
+}

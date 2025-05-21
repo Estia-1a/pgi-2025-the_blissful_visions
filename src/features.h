@@ -3,4 +3,6 @@
 
 
 void helloWorld();
+
+void dimensions ();
 #endif
