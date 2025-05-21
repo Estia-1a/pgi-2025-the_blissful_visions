@@ -3,7 +3,4 @@
 
 
 void helloWorld();
-
-void dimention (char *source_path);
-
 #endif
