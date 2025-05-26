@@ -15,6 +15,14 @@ void helloWorld() {
     printf("yep!");
 }
 
-void dimensions () {
-    printf ("dimension : %d, %d");
+void dimensions(char *filename) {
+    unsigned char *data; 
+    int width;
+    int height;
+    int channel_count; 
+
+    read_image_data(filename, &data, &width, &height, &channel_count);
+
+    printf ("dimension : %d, %d", width, height);
+
 }

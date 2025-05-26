@@ -4,5 +4,6 @@
 
 void helloWorld();
 
-void dimensions ();
+void dimensions(char *filename);
+
 #endif

@@ -8,11 +8,13 @@
  *
 */
 
+
 typedef struct _pixelRGB {
   char R ; 
   char G ; 
   char B ; 
 } pixelRGB ;
+
 
 
 #endif
