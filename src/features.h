@@ -6,4 +6,12 @@ void helloWorld();
 
 void dimensions(char *filename);
 
+void first_pixel (char *source_path);
+
+void tenth_pixel (char *source_path);
+
+
+
+
+
 #endif

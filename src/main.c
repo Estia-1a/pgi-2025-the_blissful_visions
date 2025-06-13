@@ -37,5 +37,16 @@ int main(int argc, char **argv) {
     dimensions(configuration.filenames[0]);
   }
   
+  if ( strncmp( configuration.command, "first_pixel", 9 ) == 0 ) {
+    
+    first_pixel(configuration.filenames[0]);
+  }
+
+  if ( strncmp( configuration.command, "tenth_pixel", 9 ) == 0 ) {
+    
+    tenth_pixel(configuration.filenames[0]);
+  }
   return 0;
+
+
 }
