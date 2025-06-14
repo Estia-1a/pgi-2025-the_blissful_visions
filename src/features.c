@@ -60,3 +60,17 @@ void tenth_pixel (char *filename){
     printf("tenth_pixel : %d, %d, %d", tenth_pixel.R, tenth_pixel.G, tenth_pixel.B);
 }   
 
+void second_line (char *filename){
+    unsigned char *data; 
+    int width, height, channel_count;
+
+    pixelRGB second_line;
+
+    read_image_data(filename, &data, &width, &height, &channel_count);
+
+    second_line.R = data[4464];
+    second_line.G = data[4465];
+    second_line.B = data[4466];
+
+    printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
+}
