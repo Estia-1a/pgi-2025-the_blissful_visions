@@ -1,7 +1,17 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-/**
+
+
+pixelRGB * get_pixel( unsigned char* data, const unsigned int width, const unsigned int height, const unsigned int n, const unsigned int x, const unsigned int y );
+
+ typedef struct {
+       unsigned char R;
+       unsigned char G;
+       unsigned char B;
+ } pixel RGB;
+
+/*
  * @brief Here, you have to define pixelRGB struct and its functions:
  * - pixel* getPixel( unsigned char* data, const unsigned int width, const unsigned int height, const unsigned int n, const unsigned int x, const unsigned int y );
  * - void setPixel( unsigned char* data, const unsigned int width, const unsigned int height, const unsigned int n, const unsigned int x, const unsigned int y, pixelRGB* pixel);

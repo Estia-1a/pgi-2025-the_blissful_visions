@@ -4,3 +4,5 @@
 
 void helloWorld();
 #endif
+
+void first-pixel(char *source-path);
