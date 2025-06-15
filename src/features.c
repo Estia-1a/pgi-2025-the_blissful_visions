@@ -73,3 +73,23 @@ void second_line (char *filename){
 
     printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
 }
+
+void color_red(char *source_path){
+    int status ;
+    unsigned char *data;
+    int width ,height , channel_count ;
+    int i,j ;
+    status= read_image_data(source_path,&data, &width,&height,&channel_count);
+    if(status !=0){
+
+       for (j = 0; j < height;j++) {
+        for (i = 0; i< width; i++) {
+            int a = (j * width + i) * channel_count;
+            data[a + 1] = 0; 
+            data[a + 2] = 0;  
+        }
+       }
+       write_image_data("image_out.bmp",data, width,height);
+       free_image_data(data) ;
+    }
+}
