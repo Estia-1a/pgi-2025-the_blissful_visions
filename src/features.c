@@ -90,7 +90,7 @@ void color_red(char *source_path){
         }
        }
        write_image_data("image_out.bmp",data, width,height);
-       free_image_data(data) ;
+       free(data) ;
     }
 }
 void color_green(char *source_path){
@@ -109,6 +109,25 @@ void color_green(char *source_path){
         }
        }
        write_image_data("image_out.bmp",data, width,height);
-       free_image_data(data) ;
+       free(data) ;
+    }
+}
+void color_blue(char *source_path){
+    int post1;
+    unsigned char *data;
+    int width ,height , channel_count ;
+    int a,i,j ;
+    post1= read_image_data(source_path,&data, &width,&height,&channel_count);
+    if(post1 !=0){
+
+       for (j = 0; j < height;j++) {
+        for (i = 0; i< width; i++) {
+            a = (j * width + i) * channel_count;
+            data[a] = 0; 
+            data[a+1] = 0;  
+        }
+       }
+       write_image_data("image_out.bmp",data, width,height);
+       free(data) ;
     }
 }
