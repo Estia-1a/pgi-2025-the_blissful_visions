@@ -73,6 +73,3 @@ void second_line (char *filename){
 
     printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
 }
-void print_pixel( char *filename, int x, int y ){
-    
-}
