@@ -131,3 +131,76 @@ void color_blue(char *source_path){
        free(data) ;
     }
 }
+void max_pixel(char *source_path){
+    unsigned char *data;
+    int x,y,height,width,channel_count,prof,sum, R,G,B, max_rgb_sum,maximum0,maximum1;
+
+    max_rgb_sum =0 ;
+    maximum0 = 0;
+    maximum1= 0 ;
+    prof= read_image_data(source_path, &data, &width, &height, &channel_count);
+
+    if (prof!=0){
+
+            for (y= 0; y< height; y++) {
+                for (x= 0; x < width; x++) {
+                    R = (y*width+x)*channel_count;
+                    G = (y*width+x)*channel_count + 1;
+                    B = (y*width+x)*channel_count + 2;
+
+                    sum = data[R] + data[G] + data[B];
+                    if (sum > max_rgb_sum) {
+                        max_rgb_sum = sum;
+                        maximum0 = x;
+                        maximum1= y;
+                    }
+                }
+            }
+
+            R = (maximum1*width+maximum0)*channel_count;
+            G = (maximum1*width+maximum0)*channel_count + 1;
+            B = (maximum1*width+maximum0)*channel_count + 2;
+
+            printf("max_pixel (%d, %d): %d, %d, %d\n", maximum0,maximum1, data[R], data[G], data[B]);
+    }
+    else{
+        printf("An error occured");
+    }
+}
+
+void min_pixel(char *source_path){
+    unsigned char *data;
+    int x,y,height,width,channel_count,prof1,sum, R,G,B, min_rgb_sum,minimum0,minimum1;
+
+    min_rgb_sum =256 ;
+    minimum0 = 0;
+    minimum1= 0 ;
+    prof1= read_image_data(source_path, &data, &width, &height, &channel_count);
+
+    if (prof1 !=0 && channel_count==3){
+
+            for (y= 0; y< height; y++) {
+                for (x= 0; x < width; x++) {
+                    R = (y*width+x)*channel_count;
+                    G = (y*width+x)*channel_count + 1;
+                    B = (y*width+x)*channel_count + 2;
+
+                    sum = data[R] + data[G] + data[B];
+                    if (sum <min_rgb_sum) {
+                        min_rgb_sum = sum;
+                        minimum0=x;
+                        minimum1=y;
+                    }
+                }
+            }
+
+            R = (minimum1*width+minimum0)*channel_count;
+            G = (minimum1*width+minimum0)*channel_count + 1;
+            B = (minimum1*width+minimum0)*channel_count + 2;
+
+            printf("min_pixel (%d, %d): %d, %d, %d\n", minimum0, minimum1, data[R], data[G], data[B]);
+    }
+    else{
+        printf("An error occured");
+    }
+}
