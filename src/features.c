@@ -75,17 +75,36 @@ void second_line (char *filename){
 }
 
 void color_red(char *source_path){
-    int status ;
+    int vision ;
     unsigned char *data;
     int width ,height , channel_count ;
-    int i,j ;
-    status= read_image_data(source_path,&data, &width,&height,&channel_count);
-    if(status !=0){
+    int a,i,j ;
+    vision= read_image_data(source_path,&data, &width,&height,&channel_count);
+    if(vision !=0){
 
        for (j = 0; j < height;j++) {
         for (i = 0; i< width; i++) {
-            int a = (j * width + i) * channel_count;
+            a = (j * width + i) * channel_count;
             data[a + 1] = 0; 
+            data[a + 2] = 0;  
+        }
+       }
+       write_image_data("image_out.bmp",data, width,height);
+       free_image_data(data) ;
+    }
+}
+void color_green(char *source_path){
+    int post ;
+    unsigned char *data;
+    int width ,height , channel_count ;
+    int a,i,j ;
+    post= read_image_data(source_path,&data, &width,&height,&channel_count);
+    if(post !=0){
+
+       for (j = 0; j < height;j++) {
+        for (i = 0; i< width; i++) {
+            a = (j * width + i) * channel_count;
+            data[a] = 0; 
             data[a + 2] = 0;  
         }
        }
