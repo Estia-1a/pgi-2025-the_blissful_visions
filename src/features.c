@@ -19,9 +19,8 @@ void helloWorld() {
 
 void dimensions(char *filename) {
     unsigned char *data; 
-    int width;
-    int height;
-    int channel_count; 
+    int width, height, channel_count;
+   
 
     read_image_data(filename, &data, &width, &height, &channel_count);
 
@@ -73,4 +72,7 @@ void second_line (char *filename){
     second_line.B = data[4466];
 
     printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
+}
+void print_pixel( char *filename, int x, int y ){
+    
 }
