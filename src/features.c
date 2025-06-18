@@ -204,3 +204,46 @@ void min_pixel(char *source_path){
         printf("An error occured");
     }
 }
+
+
+
+void flip_image(unsigned char *src, unsigned char *dst, int width, int height, int channels) {
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int src_idx = (y * width + x) * channels;
+            int dst_idx = ((height - 1 - y) * width + (width - 1 - x)) * channels;
+
+            for (int c = 0; c < channels; ++c) {
+                dst[dst_idx + c] = src[src_idx + c];
+            }
+        }
+    }
+}
+
+void mirror_total(const char *input_filename) {
+    unsigned char *data = NULL;
+    int width, height, channels;
+
+    if (!read_image_data(input_filename, &data, &width, &height, &channels)) {
+        fprintf(stderr, "Failed to read image.\n");
+        return;
+    }
+
+    unsigned char *result = malloc(width * height * channels);
+    if (!result) {
+        fprintf(stderr, "Memory allocation error.\n");
+        free(data);
+        return;
+    }
+
+    flip_image(data, result, width, height, channels);
+    write_image_data("image_out.bmp", result, width, height);
+
+    printf("Image enregistrée sous : image_out.bmp\n");
+
+    
+    system("start image_out.bmp");
+
+    free(data);
+    free(result);
+}

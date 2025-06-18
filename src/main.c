@@ -70,6 +70,9 @@ int main(int argc, char **argv) {
     min_pixel( configuration.filenames[0] );
   }
 
+  if ( strncmp(configuration.command, "mirror_total", 12) == 0 ) {
+    mirror_total(configuration.filenames[0]);
+}
   return 0;
 
 }
