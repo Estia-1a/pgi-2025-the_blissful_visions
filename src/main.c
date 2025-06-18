@@ -51,6 +51,12 @@ int main(int argc, char **argv) {
     
     second_line(configuration.filenames[0]);
   }
+    
+  if ( strncmp( configuration.command, "print_pixel", 11 ) == 0 ) {
+    
+    print_pixel(configuration.filenames[0], 45, 500);
+  }
+
   if ( strncmp( configuration.command, "color_red",10 ) == 0 ) {
     color_red( configuration.filenames[0] );
   }
@@ -68,6 +74,10 @@ int main(int argc, char **argv) {
 
   if ( strncmp( configuration.command, "min_pixel",9) == 0 ) {
     min_pixel( configuration.filenames[0] );
+  }
+
+  if ( strncmp( configuration.command, "min_component",13) == 0 ) {
+    min_component( configuration.filenames[0], configuration.arguments[0]);
   }
 
   return 0;

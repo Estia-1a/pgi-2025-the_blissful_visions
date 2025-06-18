@@ -59,6 +59,7 @@ void tenth_pixel (char *filename){
     printf("tenth_pixel : %d, %d, %d", tenth_pixel.R, tenth_pixel.G, tenth_pixel.B);
 }   
 
+
 void second_line (char *filename){
     unsigned char *data; 
     int width, height, channel_count;
@@ -73,7 +74,19 @@ void second_line (char *filename){
 
     printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
 }
-
+void print_pixel( char *filename, int x, int y){
+    unsigned char *data;
+    int width, height, channel_count;
+    pixelRGB print_pixel;
+   
+    read_image_data(filename, &data, &width, &height, &channel_count);
+ 
+    print_pixel.R = data[channel_count*(y*width+x)];
+    print_pixel.G = data[channel_count*(y*width+x)+1];
+    print_pixel.B = data[channel_count*(y*width+x)+2];
+ 
+    printf("print_pixel (%d, %d) : %d, %d, %d", x, y, print_pixel.R, print_pixel.G, print_pixel.B);
+}
 void color_red(char *source_path){
     int vision ;
     unsigned char *data;
@@ -203,4 +216,41 @@ void min_pixel(char *source_path){
     else{
         printf("An error occured");
     }
+
+    
+}
+void min_component ( char *source_path, *char component){
+
+    unsigned char *data;
+    int width, height, channel_count, sum, i, j, minx=0, miny=0, x=0, y=0;
+    pixelRGB min;
+    int R=255, G=255, B=255; 
+    
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+
+    for(y=0; y<height; y++){
+        for(x=0; x<width; x++){
+            min = *get_pixel(data, width, height, x, y);
+
+            if(R>min.R && *component == 'R' ){
+                R = min.G
+                minx=x;
+                miny=y;
+            }
+            if(G>min.G && *component == 'G' ){
+                G= min.G;
+                minx=x;
+                miny=y;
+            }
+            if(B>min.B && *component == 'B' ){
+                B=min.B;
+                minx=x;
+                miny=y;
+            }
+        }
+    }
+    int minimum=fmin(fmin(R,G),B);
+
+    printf("min_component %s (%d, %d): %d, %d, %d"component, minx, miny, min);
+
 }
