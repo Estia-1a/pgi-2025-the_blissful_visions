@@ -5,7 +5,7 @@
 
 #include "features.h"
 #include "utils.h"
-
+#include  <math.h>
 /**
  * @brief Here, you have to code features of the project.
  * Do not forget to commit regurlarly your changes.
@@ -219,31 +219,32 @@ void min_pixel(char *source_path){
 
     
 }
-void min_component ( char *source_path, *char component){
+void min_component ( char *source_path, char *component){
 
     unsigned char *data;
-    int width, height, channel_count, sum, i, j, minx=0, miny=0, x=0, y=0;
-    pixelRGB min;
+    int width, height, channel_count, minx=0, miny=0, x=0, y=0;
+    pixelRGB min_RGB;
     int R=255, G=255, B=255; 
     
     read_image_data(source_path, &data, &width, &height, &channel_count);
 
     for(y=0; y<height; y++){
         for(x=0; x<width; x++){
-            min = *get_pixel(data, width, height, x, y);
+            
+            min_RGB = getpixel(data, width, height, x, y);
 
-            if(R>min.R && *component == 'R' ){
-                R = min.G
+            if(R>min_RGB.R && *component == 'R' ){
+                R = min_RGB.R;
                 minx=x;
                 miny=y;
             }
-            if(G>min.G && *component == 'G' ){
-                G= min.G;
+            if(G>min_RGB.G && *component == 'G' ){
+                G= min_RGB.G;
                 minx=x;
                 miny=y;
             }
-            if(B>min.B && *component == 'B' ){
-                B=min.B;
+            if(B>min_RGB.B && *component == 'B' ){
+                B=min_RGB.B;
                 minx=x;
                 miny=y;
             }
@@ -251,6 +252,6 @@ void min_component ( char *source_path, *char component){
     }
     int minimum=fmin(fmin(R,G),B);
 
-    printf("min_component %s (%d, %d): %d, %d, %d"component, minx, miny, min);
+    printf("min_component %s (%d, %d): %d ", component, minx, miny, minimum);
 
 }
