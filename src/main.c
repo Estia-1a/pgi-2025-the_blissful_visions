@@ -80,6 +80,10 @@ int main(int argc, char **argv) {
     min_component( configuration.filenames[0], configuration.arguments[0]);
   }
 
+  if ( strncmp( configuration.command, "max_component",13) == 0 ) {
+    max_component( configuration.filenames[0], configuration.arguments[0]);
+  }
+
   return 0;
 
 }

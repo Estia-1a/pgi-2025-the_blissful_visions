@@ -268,3 +268,52 @@ void min_component(char *source_path, char *component) {
     
     free(data);
 }
+
+void max_component(char *source_path, char *component) {
+    unsigned char *data;
+    int width, height, channel_count;
+    
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    
+    
+    int min_val_RGB = 0; 
+    int max_x = 0, max_y = 0;
+    
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            
+            pixelRGB *max_RGB = get_pixel(data, width, height, x, y);
+            
+            int val_RGB;
+            
+            
+            if (strcmp(component, "R") == 0) {
+                val_RGB = max_RGB->R;  
+            }
+            else if (strcmp(component, "G") == 0) {
+                val_RGB = max_RGB ->G;
+            }
+            else if (strcmp(component, "B") == 0) {
+                val_RGB = max_RGB ->B;
+            }
+            else {
+                printf("Erreur: composante invalide\n");
+                free(data);
+                return;
+            }
+            
+            
+            if (val_RGB > min_val_RGB) {
+                min_val_RGB = val_RGB;
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+    
+    
+    printf("min_component %s (%d, %d): %d\n", component, max_x, max_y, min_val_RGB);
+    
+    free(data);
+}
