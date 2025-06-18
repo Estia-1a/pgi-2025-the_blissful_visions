@@ -219,77 +219,34 @@ void min_pixel(char *source_path){
 
     
 }
-/*void min_component ( char *source_path, char *component){
-
-    unsigned char *data;
-    int width, height, channel_count; 
-    
-    
-    read_image_data(source_path, &data, &width, &height, &channel_count);
-    
-    int x, y;
-    
-    pixelRGB min_RGB[x][y];
-   
-    int R=255, G=255, B=255; 
-    int minx=0, miny=0;
-   
-    for(y=0; y<height; y++){
-        for(x=0; x<width; x++){
-            
-            min_RGB = get_pixel(data, width, height, channel_count, x, y);
-        
-            if(((strcmp(R, data[x][y]))==0) && (component == 'R') ){
-                R = min_RGB->R;
-                minx=x;
-                miny=y;
-            }
-            if(((strcmp(G, data[x][y]))==0) && (component == 'G')){
-                G= min_RGB->G;
-                minx=x;
-                miny=y;
-            }
-            if(((strcmp(B, data[x][y]))==0) && (component == 'B')){
-                B=min_RGB->B;
-                minx=x;
-                miny=y;
-            }
-        }
-    }
-    int minimum=fmin(fmin(R,G),B);
-
-    printf("min_component %s (%d, %d): %d ", component, minx, miny, minimum);
-    free(data);
-}*/
 
 void min_component(char *source_path, char *component) {
     unsigned char *data;
     int width, height, channel_count;
     
-    // Lire les données de l'image
     read_image_data(source_path, &data, &width, &height, &channel_count);
     
-    // Variables pour stocker le minimum trouvé
-    int min_value = 255;  // Valeur max possible
+    
+    int max_val_RGB = 255; 
     int min_x = 0, min_y = 0;
     
-    // Parcourir tous les pixels
+    
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            // Obtenir le pixel actuel (get_pixel retourne un pointeur)
-            pixelRGB *current_pixel = get_pixel(data, width, height, x, y);
             
-            int current_value;
+            pixelRGB *min_RGB = get_pixel(data, width, height, x, y);
             
-            // Extraire la bonne composante selon le paramètre
+            int val_RGB;
+            
+            
             if (strcmp(component, "R") == 0) {
-                current_value = current_pixel->R;  // Utilisation de -> car c'est un pointeur
+                val_RGB = min_RGB->R;  
             }
             else if (strcmp(component, "G") == 0) {
-                current_value = current_pixel->G;
+                val_RGB = min_RGB ->G;
             }
             else if (strcmp(component, "B") == 0) {
-                current_value = current_pixel->B;
+                val_RGB = min_RGB ->B;
             }
             else {
                 printf("Erreur: composante invalide\n");
@@ -297,17 +254,17 @@ void min_component(char *source_path, char *component) {
                 return;
             }
             
-            // Comparer avec le minimum actuel
-            if (current_value < min_value) {
-                min_value = current_value;
+            
+            if (val_RGB < max_val_RGB) {
+                max_val_RGB = val_RGB;
                 min_x = x;
                 min_y = y;
             }
         }
     }
     
-    // Afficher le résultat
-    printf("min_component %s (%d, %d): %d\n", component, min_x, min_y, min_value);
+    
+    printf("min_component %s (%d, %d): %d\n", component, min_x, min_y, max_val_RGB);
     
     free(data);
 }
