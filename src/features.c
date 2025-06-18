@@ -206,7 +206,6 @@ void min_pixel(char *source_path){
 }
 
 
-
 void flip_image(unsigned char *src, unsigned char *dst, int width, int height, int channels) {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
