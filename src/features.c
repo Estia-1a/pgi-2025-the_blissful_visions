@@ -62,18 +62,22 @@ void tenth_pixel (char *filename){
 
 void second_line (char *filename){
     unsigned char *data; 
-    int width, height, channel_count;
-
-    pixelRGB second_line;
+    int width, height, channel_count, positionR, positionG, positionB;
+    unsigned char val_R, val_G, val_B;
 
     read_image_data(filename, &data, &width, &height, &channel_count);
 
-    second_line.R = data[4464];
-    second_line.G = data[4465];
-    second_line.B = data[4466];
+    positionR = 3 * width;
+    positionG = 3 * width +1;
+    positionB = 3 * width +2;
 
-    printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
+    val_R = data[positionR];
+    val_G = data[positionG];
+    val_B = data[positionB];
+
+    printf("second_line : %d, %d, %d", val_R, val_G, val_B);
 }
+
 void print_pixel( char *filename, int x, int y){
     unsigned char *data;
     int width, height, channel_count;
