@@ -489,10 +489,6 @@ void conversion_en_niveaux_de_gris(const char *chemin_image) {
 }
 
 
-
-
-
-
 static unsigned char composante_luminance(unsigned char rouge, unsigned char vert, unsigned char bleu) {
     
     return (unsigned char)(0.21 * rouge + 0.72 * vert + 0.07 * bleu);
@@ -707,4 +703,67 @@ void rotation_anti_horaire(const char *chemin_image) {
 
     free(original);
     free(sortie);
+}
+
+void scale_crop(char *source_path, int center_x, int center_y, int crop_width, int crop_height) {
+    unsigned char *data, *nouveau_data;
+    int width, height, channel_count;
+    int x,y, c;
+    int src_width, src_height;
+    int start_x, start_y, end_x, end_y;
+    
+    if (read_image_data(source_path, &data, &width, &height, &channel_count)!= 1) {
+        fprintf(stderr, "Error: Unable to read image data from %s\n", source_path);
+        return;
+    }
+
+    start_x = center_x-crop_width / 2; 
+    start_y = center_y-crop_height / 2;
+    end_x = start_x + crop_width;
+    end_y = start_y + crop_height; 
+       
+    if (start_x < 0){
+        start_x = 0 ;
+    }
+    if (start_y < 0){
+        start_y = 0; 
+    }
+
+    if(end_x > width){
+        end_x = width;
+    }
+    
+    if(end_y > height){
+        end_y = height;
+    }
+    src_width = end_x - start_x;
+    src_height = end_y - start_y; 
+        
+    nouveau_data = (unsigned char*)malloc(src_width * src_height*channel_count ); 
+    
+    
+    for (y=0;y <src_height; y++ ){
+        for(x=0; x<src_width; x++){
+         for (c = 0; c < channel_count; c++){
+
+                nouveau_data [(y * src_width + x) * channel_count + c] = data [((start_y + y) * width + (start_x + x)) * channel_count +c];
+            }
+        }
+    }
+
+char output_filename [100];
+        snprintf(output_filename, sizeof(output_filename), "image_out.bmp");
+
+if (write_image_data ( output_filename, nouveau_data, src_width, src_height) != 1){
+
+     fprintf(stderr, "Error: Unable to write image data to %s\n", output_filename);
+    } else {
+
+    printf("scale_crop %d %d %d %d\n", center_x, center_y, crop_width, crop_height);
+
+    }       
+
+    free (data);
+    free (nouveau_data);
+
 }
