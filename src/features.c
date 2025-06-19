@@ -280,7 +280,7 @@ void max_component(char *source_path, char *component) {
     read_image_data(source_path, &data, &width, &height, &channel_count);
     
     
-    int min_val_RGB = 0; 
+    int min_val_RGB = -1; 
     int max_x = 0, max_y = 0;
     
     
@@ -317,7 +317,7 @@ void max_component(char *source_path, char *component) {
     }
     
     
-    printf("min_component %s (%d, %d): %d\n", component, max_x, max_y, min_val_RGB);
+    printf("max_component %s (%d, %d): %d\n", component, max_x, max_y, min_val_RGB);
     
     free(data);
 }
