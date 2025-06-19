@@ -767,3 +767,50 @@ if (write_image_data ( output_filename, nouveau_data, src_width, src_height) != 
     free (nouveau_data);
 
 }
+
+void scale_nearest(char *filename, float scale_factor) {
+    unsigned char *data_entree;
+    int ancien_w, ancien_h, channel_count;
+
+    if (read_image_data(filename, &data_entree, &ancien_w, &ancien_h, &channel_count) != 1) {
+        fprintf(stderr, "Error: Unable to read image data from %s\n", filename);
+        return;
+    }
+
+    int nouvelle_w = (int)round(ancien_w * scale_factor);
+    int nouvelle_h = (int)round(ancien_h * scale_factor);
+
+    unsigned char *nouvelle_data = (unsigned char *)malloc(nouvelle_w * nouvelle_h * channel_count);
+    if (!nouvelle_data) {
+        fprintf(stderr, "Error: Unable to allocate memory for new image data\n");
+        free(data_entree);
+        return;
+    }
+
+    
+    for (int y = 0; y < nouvelle_h; y++) {
+        for (int x = 0; x < nouvelle_w; x++) {
+            int original_x = (int)(x / scale_factor);
+            int original_y = (int)(y / scale_factor);
+
+            original_x = (original_x < 0) ? 0 : (original_x >= ancien_w) ? ancien_w - 1 : original_x;
+            original_y = (original_y < 0) ? 0 : (original_y >= ancien_h) ? ancien_h - 1 : original_y;
+
+            for (int c = 0; c < channel_count; ++c) {
+                nouvelle_data[(y * nouvelle_w + x) * channel_count + c] = data_entree[(original_y * ancien_w + original_x) * channel_count + c];
+            }
+        }
+    }
+
+
+    if (write_image_data("image_out.bmp", nouvelle_data, nouvelle_w, nouvelle_h) != 1) {
+        fprintf(stderr, "Error: Unable to write image data to image_out.bmp\n");
+    }
+
+    printf("scale_nearest %.1f\n", scale_factor);
+
+    free(data_entree);
+    free(nouvelle_data);
+
+
+}
