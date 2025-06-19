@@ -350,7 +350,6 @@ void mirror_total(const char *input_filename) {
         free(data);
         return;
     }
-
     flip_image(data, result, width, height, channels);
     write_image_data("image_out.bmp", result, width, height);
 

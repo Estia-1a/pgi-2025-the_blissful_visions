@@ -29,4 +29,5 @@ void min_component(char *source_path, char *component);
 void max_component(char *source_path, char *component);
 
 void mirror_total(const char *input_filename);
+
 #endif
