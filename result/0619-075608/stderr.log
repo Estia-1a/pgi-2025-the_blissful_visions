@@ -1,0 +1,4 @@
+/home/runner/work/pgi-2025-the_blissful_visions/pgi-2025-the_blissful_visions/src/features.c: In function ‘mirror_total’:
+/home/runner/work/pgi-2025-the_blissful_visions/pgi-2025-the_blissful_visions/src/features.c:360:5: warning: ignoring return value of ‘system’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  360 |     system("start image_out.bmp");
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
