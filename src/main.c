@@ -96,6 +96,19 @@ if (strncmp(configuration.command, "mirror_horizontal", 17) == 0) {
   symetrie_horizontale(configuration.filenames[0]);
 }
 
+if (strncmp(configuration.command, "color_gray", 10) == 0) {
+  conversion_en_niveaux_de_gris(configuration.filenames[0]);
+}
+
+if (strncmp(configuration.command, "color_gray_luminance", 21) == 0) {
+  conversion_gris_luminance(configuration.filenames[0]);
+}
+
+if (strncmp(configuration.command, "color_desaturate", 17) == 0) {
+  conversion_desaturee(configuration.filenames[0]);
+}
+
+
 
   return 0;
 

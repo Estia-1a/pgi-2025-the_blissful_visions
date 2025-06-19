@@ -443,3 +443,145 @@ void symetrie_horizontale(const char *chemin_image) {
     free(donnees);
     free(resultat);
 }
+
+
+
+
+
+static unsigned char niveau_gris(unsigned char r, unsigned char g, unsigned char b) {
+    
+    return (unsigned char)(0.3 * r + 0.59 * g + 0.11 * b);
+}
+
+static void remplir_image_grise(unsigned char *source, unsigned char *grise, int largeur, int hauteur, int canaux) {
+    int total_pixels = largeur * hauteur;
+    for (int p = 0; p < total_pixels; ++p) {
+        int idx = p * canaux;
+        unsigned char gris = niveau_gris(source[idx], source[idx + 1], source[idx + 2]);
+
+        for (int c = 0; c < 3; ++c) {
+            grise[idx + c] = gris;
+        }
+    }
+}
+
+void conversion_en_niveaux_de_gris(const char *chemin_image) {
+    unsigned char *originale = NULL;
+    int w, h, ch;
+
+    if (!read_image_data(chemin_image, &originale, &w, &h, &ch)) {
+        fprintf(stderr, "Échec lecture image : %s\n", chemin_image);
+        return;
+    }
+
+    unsigned char *grayscale = malloc(w * h * ch);
+    if (!grayscale) {
+        fprintf(stderr, "Erreur mémoire\n");
+        free(originale);
+        return;
+    }
+
+    remplir_image_grise(originale, grayscale, w, h, ch);
+    write_image_data("image_out.bmp", grayscale, w, h);
+
+    free(originale);
+    free(grayscale);
+}
+
+
+
+
+
+
+static unsigned char composante_luminance(unsigned char rouge, unsigned char vert, unsigned char bleu) {
+    
+    return (unsigned char)(0.21 * rouge + 0.72 * vert + 0.07 * bleu);
+}
+
+static void generer_image_luminance(unsigned char *entree, unsigned char *grise, int largeur, int hauteur, int canaux) {
+    int total = largeur * hauteur;
+    for (int p = 0; p < total; ++p) {
+        int i = p * canaux;
+        unsigned char l = composante_luminance(entree[i], entree[i + 1], entree[i + 2]);
+        for (int c = 0; c < 3; ++c) {
+            grise[i + c] = l;
+        }
+    }
+}
+
+void conversion_gris_luminance(const char *chemin) {
+    unsigned char *originale = NULL;
+    int w, h, ch;
+
+    if (!read_image_data(chemin, &originale, &w, &h, &ch)) {
+        fprintf(stderr, "Erreur lecture fichier : %s\n", chemin);
+        return;
+    }
+
+    unsigned char *lumiere = malloc(w * h * ch);
+    if (!lumiere) {
+        fprintf(stderr, "Erreur allocation mémoire.\n");
+        free(originale);
+        return;
+    }
+
+    generer_image_luminance(originale, lumiere, w, h, ch);
+    write_image_data("image_out.bmp", lumiere, w, h);
+
+    free(originale);
+    free(lumiere);
+}
+
+
+
+static unsigned char valeur_desaturee(unsigned char r, unsigned char g, unsigned char b) {
+    unsigned char mini = r;
+    if (g < mini) mini = g;
+    if (b < mini) mini = b;
+
+    unsigned char maxi = r;
+    if (g > maxi) maxi = g;
+    if (b > maxi) maxi = b;
+
+    return (mini + maxi) / 2;
+}
+
+static void appliquer_desaturation(unsigned char *src, unsigned char *dst, int largeur, int hauteur, int canaux) {
+    for (int ligne = 0; ligne < hauteur; ++ligne) {
+        for (int col = 0; col < largeur; ++col) {
+            int idx = (ligne * largeur + col) * canaux;
+            unsigned char r = src[idx];
+            unsigned char g = src[idx + 1];
+            unsigned char b = src[idx + 2];
+
+            unsigned char gris = valeur_desaturee(r, g, b);
+            for (int c = 0; c < 3; ++c) {
+                dst[idx + c] = gris;
+            }
+        }
+    }
+}
+
+void conversion_desaturee(const char *chemin) {
+    int w, h, ch;
+    unsigned char *img = NULL;
+
+    if (!read_image_data(chemin, &img, &w, &h, &ch)) {
+        fprintf(stderr, "Erreur lecture image : %s\n", chemin);
+        return;
+    }
+
+    unsigned char *resultat = malloc(w * h * ch);
+    if (!resultat) {
+        fprintf(stderr, "Erreur mémoire\n");
+        free(img);
+        return;
+    }
+
+    appliquer_desaturation(img, resultat, w, h, ch);
+    write_image_data("image_out.bmp", resultat, w, h);
+
+    free(img);
+    free(resultat);
+}
+

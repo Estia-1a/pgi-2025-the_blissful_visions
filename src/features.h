@@ -34,4 +34,10 @@ void symetrie_verticale(const char *chemin_image);
 
 void symetrie_horizontale(const char *chemin_image);
 
+void conversion_en_niveaux_de_gris(const char *chemin_image);
+
+void conversion_gris_luminance(const char *chemin);
+
+void conversion_desaturee(const char *chemin);
+
 #endif
