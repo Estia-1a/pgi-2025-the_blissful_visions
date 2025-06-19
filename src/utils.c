@@ -7,7 +7,7 @@
  * 
  */
 
- pixelRGB *getpixel (const unsigned char* data, const unsigned int width, const unsigned int height, const unsigned int x, const unsigned int y){
+ pixelRGB *get_pixel (const unsigned char* data, const unsigned int width, const unsigned int height, const unsigned int x, const unsigned int y){
     
     if (data == NULL || x>= width || y >= height){
         return NULL; 
