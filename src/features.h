@@ -25,4 +25,5 @@ void max_pixel(char *source_path);
 void min_pixel(char *source_path);
 
 void mirror_total(const char *input_filename);
+
 #endif
