@@ -88,6 +88,15 @@ int main(int argc, char **argv) {
     mirror_total(configuration.filenames[0]);
 }
 
+if (strncmp(configuration.command, "symetrie_verticale", 18) == 0) {
+  symetrie_verticale(configuration.filenames[0]);
+}
+
+if (strncmp(configuration.command, "mirror_horizontal", 17) == 0) {
+  symetrie_horizontale(configuration.filenames[0]);
+}
+
+
   return 0;
 
 }

@@ -361,3 +361,85 @@ void mirror_total(const char *input_filename) {
     free(data);
     free(result);
 }
+
+void retourner_lignes_verticalement(unsigned char *entree, unsigned char *sortie, int largeur, int hauteur, int canaux) {
+    int taille_ligne = largeur * canaux;
+    for (int ligne = 0; ligne < hauteur; ++ligne) {
+        unsigned char *src = entree + ligne * taille_ligne;
+        unsigned char *dest = sortie + (hauteur - ligne - 1) * taille_ligne;
+        memcpy(dest, src, taille_ligne);  
+    }
+}
+
+void symetrie_verticale(const char *chemin_image) {
+    int l, h, c;
+    unsigned char *donnees = NULL;
+    unsigned char *symetrie = NULL;
+
+    if (!read_image_data(chemin_image, &donnees, &l, &h, &c)) {
+        fprintf(stderr, "Erreur : lecture de l'image impossible (%s)\n", chemin_image);
+        return;
+    }
+
+    int taille_totale = l * h * c;
+    symetrie = malloc(taille_totale);
+    if (!symetrie) {
+        fprintf(stderr, "Erreur : mémoire insuffisante.\n");
+        free(donnees);
+        return;
+    }
+
+    retourner_lignes_verticalement(donnees, symetrie, l, h, c);
+
+    write_image_data("image_out.bmp", symetrie, l, h);
+
+    free(donnees);
+    free(symetrie);
+}
+
+
+
+void inverser_colonnes(unsigned char *ligne_src, unsigned char *ligne_dest, int largeur, int canaux) {
+    for (int col = 0; col < largeur; ++col) {
+        for (int c = 0; c < canaux; ++c) {
+            int source_idx = col * canaux + c;
+            int dest_idx = (largeur - 1 - col) * canaux + c;
+            ligne_dest[dest_idx] = ligne_src[source_idx];
+        }
+    }
+}
+
+void retourner_colonnes_horizontalement(unsigned char *entree, unsigned char *sortie, int largeur, int hauteur, int canaux) {
+    int ligne_taille = largeur * canaux;
+
+    for (int ligne = 0; ligne < hauteur; ++ligne) {
+        unsigned char *src = entree + ligne * ligne_taille;
+        unsigned char *dst = sortie + ligne * ligne_taille;
+        inverser_colonnes(src, dst, largeur, canaux);
+    }
+}
+
+void symetrie_horizontale(const char *chemin_image) {
+    unsigned char *donnees = NULL;
+    unsigned char *resultat = NULL;
+    int l, h, c;
+
+    if (!read_image_data(chemin_image, &donnees, &l, &h, &c)) {
+        fprintf(stderr, "Erreur de lecture : %s\n", chemin_image);
+        return;
+    }
+
+    int taille = l * h * c;
+    resultat = malloc(taille);
+    if (!resultat) {
+        fprintf(stderr, "Erreur mémoire.\n");
+        free(donnees);
+        return;
+    }
+
+    retourner_colonnes_horizontalement(donnees, resultat, l, h, c);
+    write_image_data("image_out.bmp", resultat, l, h);
+
+    free(donnees);
+    free(resultat);
+}

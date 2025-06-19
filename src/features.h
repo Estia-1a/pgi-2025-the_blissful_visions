@@ -30,4 +30,8 @@ void max_component(char *source_path, char *component);
 
 void mirror_total(const char *input_filename);
 
+void symetrie_verticale(const char *chemin_image);
+
+void symetrie_horizontale(const char *chemin_image);
+
 #endif
