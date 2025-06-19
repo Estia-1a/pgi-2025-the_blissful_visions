@@ -40,4 +40,12 @@ void conversion_gris_luminance(const char *chemin);
 
 void conversion_desaturee(const char *chemin);
 
+void inversion_couleurs(const char *chemin_image);
+
+void rotation_horaire(const char *chemin);
+
+void rotation_anti_horaire(const char *chemin_image);
+
+
+
 #endif

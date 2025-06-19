@@ -585,3 +585,126 @@ void conversion_desaturee(const char *chemin) {
     free(resultat);
 }
 
+
+
+
+static void inverser_pixels(unsigned char *src, unsigned char *dst, int largeur, int hauteur, int canaux) {
+    int total_pixels = largeur * hauteur;
+
+    for (int i = 0; i < total_pixels; ++i) {
+        int index = i * canaux;
+
+        dst[index]     = 255 - src[index];     
+        dst[index + 1] = 255 - src[index + 1]; 
+        dst[index + 2] = 255 - src[index + 2]; 
+
+       
+        if (canaux == 4) {
+            dst[index + 3] = src[index + 3];
+        }
+    }
+}
+
+void inversion_couleurs(const char *chemin_image) {
+    unsigned char *originale = NULL;
+    int w, h, ch;
+
+    if (!read_image_data(chemin_image, &originale, &w, &h, &ch)) {
+        fprintf(stderr, "Erreur lecture image : %s\n", chemin_image);
+        return;
+    }
+
+    unsigned char *inverse = malloc(w * h * ch);
+    if (!inverse) {
+        fprintf(stderr, "Erreur allocation mémoire\n");
+        free(originale);
+        return;
+    }
+
+    inverser_pixels(originale, inverse, w, h, ch);
+    write_image_data("image_out.bmp", inverse, w, h);
+
+    free(originale);
+    free(inverse);
+}
+
+
+
+
+static void rotation_90_droite(unsigned char *src, unsigned char *dst, int largeur, int hauteur, int canaux) {
+    for (int ligne = 0; ligne < hauteur; ++ligne) {
+        for (int col = 0; col < largeur; ++col) {
+            int source_idx = (ligne * largeur + col) * canaux;
+            int cible_idx = (col * hauteur + (hauteur - 1 - ligne)) * canaux;
+
+            for (int c = 0; c < canaux; ++c) {
+                dst[cible_idx + c] = src[source_idx + c];
+            }
+        }
+    }
+}
+
+void rotation_horaire(const char *chemin) {
+    unsigned char *origine = NULL;
+    int l, h, ch;
+
+    if (!read_image_data(chemin, &origine, &l, &h, &ch)) {
+        fprintf(stderr, "Impossible de lire l'image : %s\n", chemin);
+        return;
+    }
+
+    
+    unsigned char *tourne = malloc(l * h * ch);
+    if (!tourne) {
+        fprintf(stderr, "Erreur mémoire\n");
+        free(origine);
+        return;
+    }
+
+    rotation_90_droite(origine, tourne, l, h, ch);
+    write_image_data("image_out.bmp", tourne, h, l); 
+
+    free(origine);
+    free(tourne);
+}
+
+
+
+
+
+
+static void rotation_90_gauche(unsigned char *source, unsigned char *destination, int largeur, int hauteur, int canaux) {
+    for (int ligne = 0; ligne < hauteur; ++ligne) {
+        for (int colonne = 0; colonne < largeur; ++colonne) {
+            int idx_src = (ligne * largeur + colonne) * canaux;
+            int idx_dst = ((largeur - 1 - colonne) * hauteur + ligne) * canaux;
+
+            for (int c = 0; c < canaux; ++c) {
+                destination[idx_dst + c] = source[idx_src + c];
+            }
+        }
+    }
+}
+
+void rotation_anti_horaire(const char *chemin_image) {
+    unsigned char *original = NULL;
+    int w, h, ch;
+
+    if (!read_image_data(chemin_image, &original, &w, &h, &ch)) {
+        fprintf(stderr, "Erreur de lecture : %s\n", chemin_image);
+        return;
+    }
+
+    unsigned char *sortie = malloc(w * h * ch);
+    if (!sortie) {
+        fprintf(stderr, "Échec mémoire\n");
+        free(original);
+        return;
+    }
+
+    rotation_90_gauche(original, sortie, w, h, ch);
+    write_image_data("image_out.bmp", sortie, h, w); 
+
+    free(original);
+    free(sortie);
+}

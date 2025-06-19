@@ -109,6 +109,20 @@ if (strncmp(configuration.command, "color_desaturate", 17) == 0) {
 }
 
 
+if (strncmp(configuration.command, "color_invert", 12) == 0) {
+  inversion_couleurs(configuration.filenames[0]);
+}
+
+
+if (strncmp(configuration.command, "rotate_cw", 9) == 0) {
+  rotation_horaire(configuration.filenames[0]);
+}
+
+
+if (strncmp(configuration.command, "rotate_acw", 10) == 0) {
+  rotation_anti_horaire(configuration.filenames[0]);
+}
+
 
   return 0;
 
