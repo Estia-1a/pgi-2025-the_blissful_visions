@@ -5,7 +5,7 @@
 
 #include "features.h"
 #include "utils.h"
-
+#include  <math.h>
 /**
  * @brief Here, you have to code features of the project.
  * Do not forget to commit regurlarly your changes.
@@ -59,21 +59,38 @@ void tenth_pixel (char *filename){
     printf("tenth_pixel : %d, %d, %d", tenth_pixel.R, tenth_pixel.G, tenth_pixel.B);
 }   
 
+
 void second_line (char *filename){
     unsigned char *data; 
-    int width, height, channel_count;
-
-    pixelRGB second_line;
+    int width, height, channel_count, positionR, positionG, positionB;
+    unsigned char val_R, val_G, val_B;
 
     read_image_data(filename, &data, &width, &height, &channel_count);
 
-    second_line.R = data[4464];
-    second_line.G = data[4465];
-    second_line.B = data[4466];
+    positionR = 3 * width;
+    positionG = 3 * width +1;
+    positionB = 3 * width +2;
 
-    printf("second_line : %d, %d, %d", second_line.R, second_line.G, second_line.B);
+    val_R = data[positionR];
+    val_G = data[positionG];
+    val_B = data[positionB];
+
+    printf("second_line : %d, %d, %d", val_R, val_G, val_B);
 }
 
+void print_pixel( char *filename, int x, int y){
+    unsigned char *data;
+    int width, height, channel_count;
+    pixelRGB print_pixel;
+   
+    read_image_data(filename, &data, &width, &height, &channel_count);
+ 
+    print_pixel.R = data[channel_count*(y*width+x)];
+    print_pixel.G = data[channel_count*(y*width+x)+1];
+    print_pixel.B = data[channel_count*(y*width+x)+2];
+ 
+    printf("print_pixel (%d, %d) : %d, %d, %d", x, y, print_pixel.R, print_pixel.G, print_pixel.B);
+}
 void color_red(char *source_path){
     int vision ;
     unsigned char *data;
@@ -203,8 +220,107 @@ void min_pixel(char *source_path){
     else{
         printf("An error occured");
     }
+
+    
 }
 
+void min_component(char *source_path, char *component) {
+    unsigned char *data;
+    int width, height, channel_count;
+    
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    
+    
+    int max_val_RGB = 255; 
+    int min_x = 0, min_y = 0;
+    
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            
+            pixelRGB *min_RGB = get_pixel(data, width, height, x, y);
+            
+            int val_RGB;
+            
+            
+            if (strcmp(component, "R") == 0) {
+                val_RGB = min_RGB->R;  
+            }
+            else if (strcmp(component, "G") == 0) {
+                val_RGB = min_RGB ->G;
+            }
+            else if (strcmp(component, "B") == 0) {
+                val_RGB = min_RGB ->B;
+            }
+            else {
+                printf("Erreur: composante invalide\n");
+                free(data);
+                return;
+            }
+            
+            
+            if (val_RGB < max_val_RGB) {
+                max_val_RGB = val_RGB;
+                min_x = x;
+                min_y = y;
+            }
+        }
+    }
+    
+    
+    printf("min_component %s (%d, %d): %d\n", component, min_x, min_y, max_val_RGB);
+    
+    free(data);
+}
+
+void max_component(char *source_path, char *component) {
+    unsigned char *data;
+    int width, height, channel_count;
+    
+    read_image_data(source_path, &data, &width, &height, &channel_count);
+    
+    
+    int min_val_RGB = 0; 
+    int max_x = 0, max_y = 0;
+    
+    
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            
+            pixelRGB *max_RGB = get_pixel(data, width, height, x, y);
+            
+            int val_RGB;
+            
+            
+            if (strcmp(component, "R") == 0) {
+                val_RGB = max_RGB->R;  
+            }
+            else if (strcmp(component, "G") == 0) {
+                val_RGB = max_RGB ->G;
+            }
+            else if (strcmp(component, "B") == 0) {
+                val_RGB = max_RGB ->B;
+            }
+            else {
+                printf("Erreur: composante invalide\n");
+                free(data);
+                return;
+            }
+            
+            
+            if (val_RGB > min_val_RGB) {
+                min_val_RGB = val_RGB;
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+    
+    
+    printf("min_component %s (%d, %d): %d\n", component, max_x, max_y, min_val_RGB);
+    
+    free(data);
+}
 
 void flip_image(unsigned char *src, unsigned char *dst, int width, int height, int channels) {
     for (int y = 0; y < height; ++y) {
